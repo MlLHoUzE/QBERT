@@ -1,0 +1,78 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <GL/glut.h>
+
+
+class Disk{
+private:
+	float _i, _j;
+	bool isActive = false;
+public:
+	Disk(float i, float j){
+		_i = i;
+		_j = j;
+	}
+
+	~Disk(){
+	}
+
+	void draw(){
+		glTranslatef(_i, _j, -1.0);
+		glColor4f(0.137255, 0.556863, 0.419608, 1.0);
+		glutSolidTorus(0.1, 0.25, 10, 20);
+		glLoadIdentity();
+	}
+
+	void setPosition(float i, float j){
+
+		_i = i;
+		_j = j;
+		if (_j < -2.8)
+		{
+			deactivate();
+			_i = 100;
+			_j = 100;
+		}
+	}
+
+	void teleport(){
+		setPosition(7 - 4 - 3, 7 - 3.4);
+	}
+
+	void move(){
+
+		float rnum = rand() % 2;
+		if (rnum == 0)
+		{
+			setPosition(_i - 0.5, _j - 1);
+		}
+		else if (rnum == 1)
+		{
+			setPosition(_i + 0.5, _j - 1);
+		}
+	}
+
+	int detectCollision(float playerX, float playerY)
+	{
+		if (playerX == _j && playerY == _i)
+		{
+			return 100;
+		}
+	}
+
+	void activate()
+	{
+		isActive = true;
+	}
+
+	void deactivate()
+	{
+		isActive = false;
+	}
+
+	bool checkActive()
+	{
+		return isActive;
+	}
+};
